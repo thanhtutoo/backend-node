@@ -1,2 +1,2 @@
-export * from './logger';
-export * from './ILogger';
+export * from "./logger";
+export * from "./ILogger";

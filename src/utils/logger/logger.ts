@@ -1,23 +1,23 @@
-import * as fs from 'fs';
-import * as path from 'path';
-import * as winston from 'winston';
+import * as fs from "fs";
+import * as path from "path";
+import * as winston from "winston";
 
-import app from '../../config/config';
+import app from "../../config/config";
 
 const { level, dir: logDir } = app.logging;
 
 export class Logger {
 
-  public static DEFAULT_SCOPE = 'app';
+  public static DEFAULT_SCOPE = "app";
 
   private static parsePathToScope(filepath: string): string {
     if (filepath.indexOf(path.sep) >= 0) {
-      filepath = filepath.replace(process.cwd(), '');
-      filepath = filepath.replace(`${path.sep}src${path.sep}`, '');
-      filepath = filepath.replace(`${path.sep}dist${path.sep}`, '');
-      filepath = filepath.replace('.ts', '');
-      filepath = filepath.replace('.js', '');
-      filepath = filepath.replace(path.sep, ':');
+      filepath = filepath.replace(process.cwd(), "");
+      filepath = filepath.replace(`${path.sep}src${path.sep}`, "");
+      filepath = filepath.replace(`${path.sep}dist${path.sep}`, "");
+      filepath = filepath.replace(".ts", "");
+      filepath = filepath.replace(".js", "");
+      filepath = filepath.replace(path.sep, ":");
     }
     return filepath;
   }
@@ -33,7 +33,7 @@ export class Logger {
       fs.mkdirSync(logDir);
     }
 
-    const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+    const currentDate = new Date().toJSON().slice(0, 10).replace(/-/g, "-");
 
     this.transports = [];
     this.transports.push(
@@ -43,7 +43,7 @@ export class Logger {
     const myFormat = winston.format.printf(info => {
       return `${info.timestamp} ${info.level}: ${info.message}`;
     });
-    if (app.environment !== 'test') {
+    if (app.environment !== "test") {
       this.transports.push(new winston.transports.Console({
         format: winston.format.combine(
           winston.format.timestamp(),
@@ -57,7 +57,7 @@ export class Logger {
     this.logger = winston.createLogger({
       format: winston.format.combine(
         winston.format.timestamp({
-          format: 'YYYY-MM-DD HH:mm:ss'
+          format: "YYYY-MM-DD HH:mm:ss"
         }),
         myFormat
       ),
@@ -66,19 +66,19 @@ export class Logger {
   }
 
   public debug(message: string, ...args: any[]): void {
-    this.log('debug', message, args);
+    this.log("debug", message, args);
   }
 
   public info(message: string, ...args: any[]): void {
-    this.log('info', message, args);
+    this.log("info", message, args);
   }
 
   public warn(message: string, ...args: any[]): void {
-    this.log('warn', message, args);
+    this.log("warn", message, args);
   }
 
   public error(message: string, ...args: any[]): void {
-    this.log('error', message, args);
+    this.log("error", message, args);
   }
 
   private log(level: string, message: string, args: any[]): void {

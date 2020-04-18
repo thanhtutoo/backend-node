@@ -23,8 +23,7 @@ const auth = new AuthHandler();
 const usersRouter: Router = Router();
 
 export class UserController {
-    
-    public registerUser = async (req:Request ,res:Response, next:NextFunction) => {
+    public registerUser = async (req: Request , res: Response, next: NextFunction) => {
         const userService = new UserService();
         // const billService = new BillService();
         // const currencyService = new CurrencyService();
@@ -41,7 +40,6 @@ export class UserController {
           };
           return next(error);
         }
-  
         try {
         //   const currencyId: number = req.body.currencyId;
         //   const currency: Currency = await currencyService.getById(currencyId);
@@ -52,7 +50,6 @@ export class UserController {
           user.email = req.body.email;
           user.login = req.body.login;
           user.password = req.body.password;
-  
           const userRepository = getManager().getRepository(User);
           user = userRepository.create(user);
           user = await userService.insert(user);
@@ -70,7 +67,8 @@ export class UserController {
           next(err);
         }
     }    
-    public isLogin = async (req:Request ,res:Response, next:NextFunction) => {
+    
+    public isLogin = async (req: Request , res: Response, next: NextFunction) => {
         const userService = new UserService();
         const validationErrors = validationResult(req);
         const login: string = req.params.login;

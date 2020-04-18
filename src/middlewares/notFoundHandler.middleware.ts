@@ -1,5 +1,5 @@
-import * as HttpStatus from 'http-status-codes';
-import { Request, Response, NextFunction } from 'express';
+import * as HttpStatus from "http-status-codes";
+import { Request, Response, NextFunction } from "express";
 
 /**
  * Error response middleware for 404 not found.
