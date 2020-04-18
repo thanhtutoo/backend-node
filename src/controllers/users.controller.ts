@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import * as HttpStatus from "http-status-codes";
 import { body, param, validationResult } from "express-validator/check";
+import { getManager } from "typeorm";
 
 // Import Entities
 // import { Currency } from "../entities/currency.entity";
@@ -22,7 +23,53 @@ const auth = new AuthHandler();
 const usersRouter: Router = Router();
 
 export class UserController {
-
+    
+    public registerUser = async (req:Request ,res:Response, next:NextFunction) => {
+        const userService = new UserService();
+        // const billService = new BillService();
+        // const currencyService = new CurrencyService();
+        // const additionalService = new AdditionalService();
+        const validationErrors = validationResult(req);
+        const isLogin: User = await userService.getByLogin(req.body.login);
+        const isEmail: User = await userService.getByEmail(req.body.email);
+        console.log(req.body);
+        if (isLogin || isEmail || !validationErrors.isEmpty()) {
+          const error: IResponseError = {
+            success: false,
+            code: HttpStatus.BAD_REQUEST,
+            error: validationErrors.array()
+          };
+          return next(error);
+        }
+  
+        try {
+        //   const currencyId: number = req.body.currencyId;
+        //   const currency: Currency = await currencyService.getById(currencyId);
+          console.log("try p ");
+          let user = new User();
+          user.name = req.body.name;
+          user.surname = req.body.surname;
+          user.email = req.body.email;
+          user.login = req.body.login;
+          user.password = req.body.password;
+  
+          const userRepository = getManager().getRepository(User);
+          user = userRepository.create(user);
+          user = await userService.insert(user);
+          console.log("abc");
+          res.status(HttpStatus.OK).json({
+            success: true
+          });
+        } catch (error) {
+            console.log(error);
+          const err: IResponseError = {
+            success: false,
+            code: HttpStatus.BAD_REQUEST,
+            error
+          };
+          next(err);
+        }
+    }    
     public isLogin = async (req:Request ,res:Response, next:NextFunction) => {
         const userService = new UserService();
         const validationErrors = validationResult(req);
