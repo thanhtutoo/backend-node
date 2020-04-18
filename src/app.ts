@@ -2,7 +2,7 @@ import "reflect-metadata";
 import bodyParser from "body-parser";
 import cors from "cors";
 import swaggerUi from "swagger-ui-express";
-import express from "express";
+import express, { NextFunction } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import { createConnection, getManager } from "typeorm";
@@ -70,6 +70,13 @@ export class Application {
     //   swaggerUi.serve,
     //   swaggerUi.setup(swaggerDocument)
     // );
+    this.app.use((err:any,res:any,req:any,next:any)=>{
+      console.log("error tat p");
+      console.log(err);
+      res.status("450").json({
+        success: false
+      });
+    });
     this.app.use(genericErrorHandler);
     this.app.use(notFoundHandler);
   }

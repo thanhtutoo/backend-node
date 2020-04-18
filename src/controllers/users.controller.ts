@@ -2,7 +2,9 @@ import { NextFunction, Request, Response, Router } from "express";
 import * as HttpStatus from "http-status-codes";
 import { body, param, validationResult } from "express-validator/check";
 import { getManager } from "typeorm";
+import catchAsync from "../utils/catchAsync";
 
+console.log(catchAsync);
 // Import Entities
 // import { Currency } from "../entities/currency.entity";
 import { User } from "../entities/user.entity";
@@ -23,7 +25,7 @@ const auth = new AuthHandler();
 const usersRouter: Router = Router();
 
 export class UserController {
-    public registerUser = async (req: Request , res: Response, next: NextFunction) => {
+    public registerUser = catchAsync( async (req: Request , res: Response, next: NextFunction) => {
         const userService = new UserService();
         // const billService = new BillService();
         // const currencyService = new CurrencyService();
@@ -66,8 +68,8 @@ export class UserController {
           };
           next(err);
         }
-    }    
-    
+    });    
+
     public isLogin = async (req: Request , res: Response, next: NextFunction) => {
         const userService = new UserService();
         const validationErrors = validationResult(req);
