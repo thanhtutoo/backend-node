@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 // Import Controllers
-import usersRouter from "./controllers/users.controller";
+import {UserRoutes} from "./routes/userRoutes";
 // import registerRouter from "./controllers/register.controller";
 // import loginRouter from "./controllers/login.controller";
 // import logoutRouter from "./controllers/logout.controller";
@@ -18,10 +18,11 @@ import usersRouter from "./controllers/users.controller";
 import { AuthHandler } from "./middlewares/authHandler.middleware";
 
 const auth = new AuthHandler();
+const userRoute = new UserRoutes();
 const router: Router = Router();
 
 // router.use("/auth", [registerRouter, loginRouter, logoutRouter]);
-router.use("/users", usersRouter);
+router.use("/users", new UserRoutes().router);
 // router.use("/bills", auth.authenticate("jwt"), [billsRouter, searchRouter]);
 // router.use("/transactions", auth.authenticate("jwt"), [
 //   transactionsRouter,
