@@ -2,6 +2,7 @@ import * as HttpStatus from "http-status-codes";
 import { Request, Response, NextFunction } from "express";
 
 import { Logger } from "../utils/logger";
+import { any } from "bluebird";
 
 /**
  * Generic error response middleware for internal server errors.
@@ -19,11 +20,14 @@ export default function genericErrorHandler(
   next: NextFunction
 ): void {
   const logger = new Logger(__filename);
+  logger.info(`Info: ${JSON.stringify(req.body)}`);
   logger.error(`Error: ${JSON.stringify(err)}`);
-
+  console.log(err);
   const errCode = err.status || err.code || 500;
   let errorMsg = "";
+  // let extractedErrors: Array<any> = [];
 
+  // err.array().map(err => extractedErrors.push( err.param +':'+err.msg ))
   if (Array.isArray(err.error)) {
     errorMsg = err.error.map((e: any) => e.param + ": " + e.msg).toString();
   } else {

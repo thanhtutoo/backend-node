@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response, Router } from "express";
 import * as HttpStatus from "http-status-codes";
-import { body, param, validationResult } from "express-validator/check";
+// import { body, param, validationResult } from "express-validator/check";
 import { getManager } from "typeorm";
 import catchAsync from "../utils/catchAsync";
 
@@ -30,18 +30,23 @@ export class UserController {
         // const billService = new BillService();
         // const currencyService = new CurrencyService();
         // const additionalService = new AdditionalService();
-        const validationErrors = validationResult(req);
+        // const validationErrors = validationResult(req);
         const isLogin: User = await userService.getByLogin(req.body.login);
+        console.log(isLogin);
+        console.log("isLogin");
         const isEmail: User = await userService.getByEmail(req.body.email);
+        console.log("isemail");
+        console.log(isEmail);
         console.log(req.body);
-        if (isLogin || isEmail || !validationErrors.isEmpty()) {
-          const error: IResponseError = {
-            success: false,
-            code: HttpStatus.BAD_REQUEST,
-            error: validationErrors.array()
-          };
-          return next(error);
-        }
+        // if (isLogin || isEmail) {
+        //     console.log("d mar yout")
+        //   const error: IResponseError = {
+        //     success: false,
+        //     code: HttpStatus.BAD_REQUEST,
+        //     error: "ggwp"
+        //   };
+        //   return next(error);
+        // }
         try {
         //   const currencyId: number = req.body.currencyId;
         //   const currency: Currency = await currencyService.getById(currencyId);
@@ -60,6 +65,7 @@ export class UserController {
             success: true
           });
         } catch (error) {
+            console.log("error phan");
             console.log(error);
           const err: IResponseError = {
             success: false,

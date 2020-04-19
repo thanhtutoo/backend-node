@@ -10,6 +10,7 @@ import { Request, Response, NextFunction } from "express";
  * @returns <void>
  */
 export default function notFoundError(req: Request, res: Response, next: NextFunction): void {
+  console.log("notfounderror excuted");
   res.status(HttpStatus.NOT_FOUND).json({
     error: {
       code: HttpStatus.NOT_FOUND,
