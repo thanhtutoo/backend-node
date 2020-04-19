@@ -31,7 +31,7 @@ import differenceInYears from "date-fns/difference_in_years";
 // import { Template } from "./entities/template.entity";
 
 // Import Utils
-// import * as swaggerDocument from "./utils/swagger/swagger.json";
+import * as swaggerDocument from "./utils/swagger/swagger.json";
 import { Logger, ILogger } from "./utils/logger";
 
 // Import Crons
@@ -66,19 +66,11 @@ export class Application {
     this.app.use(new AuthHandler().initialize());
 
     this.app.use("/api", routes);
-    // this.app.use(
-    //   "/api-docs",
-    //   swaggerUi.serve,
-    //   swaggerUi.setup(swaggerDocument)
-    // );
-    // this.app.use((err: any, req: Request, res:Response, next: NextFunction) => {
-    //   console.log("error tat p");
-    //   console.log(err);
-    //   // next(err);
-    //   res.status
-    //   // return Promise(resolve);
-    // });
-    // this.app.use()
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
     this.app.use(genericErrorHandler);
     this.app.use(notFoundHandler);
   }

@@ -2,12 +2,12 @@
   "swagger": "2.0",
   "info": {
     "version": "1.1.0",
-    "title": "Bank Application",
+    "title": "Moovas Backend API",
     "contact": {
-      "email": "contact@pietrzakadrian.com"
+      "email": "thanhtutoo95@gmail.com"
     }
   },
-  "host": "bank.pietrzakadrian.com",
+  "host": "localhost:8000",
   "schemes": ["https", "http"],
   "tags": [
     {
@@ -36,7 +36,7 @@
     }
   ],
   "paths": {
-    "/api/auth/register": {
+    "/api/users/register": {
       "post": {
         "tags": ["Auth"],
         "summary": "Create user",
@@ -1217,6 +1217,6 @@
   },
   "externalDocs": {
     "description": "GitHub repository",
-    "url": "https://github.com/pietrzakadrian/bank"
+    "url": "https://github.com/thanhtutoo"
   }
 }

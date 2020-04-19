@@ -2,8 +2,8 @@ import {body, query, validationResult } from "express-validator";
 import {Request,Response,NextFunction} from "express";
 export function registerValidationRules () {
   return [
-    body('logins').exists().withMessage('required!'),
-    body('students').exists().withMessage('required!'),
+    body('login').exists().withMessage('required!'),
+    body('email').exists().withMessage('required!'),
 
   ]
 }
