@@ -32,25 +32,19 @@ export class UserController {
         // const additionalService = new AdditionalService();
         // const validationErrors = validationResult(req);
         const isLogin: User = await userService.getByLogin(req.body.login);
-        console.log(isLogin);
-        console.log("isLogin");
+
         const isEmail: User = await userService.getByEmail(req.body.email);
-        console.log("isemail");
-        console.log(isEmail);
-        console.log(req.body);
-        // if (isLogin || isEmail) {
-        //     console.log("d mar yout")
-        //   const error: IResponseError = {
-        //     success: false,
-        //     code: HttpStatus.BAD_REQUEST,
-        //     error: "ggwp"
-        //   };
-        //   return next(error);
-        // }
+        if (!isLogin || !isEmail) {
+          const error: IResponseError = {
+            success: false,
+            code: HttpStatus.BAD_REQUEST,
+            error: "ggwp"
+          };
+          return next(error);
+        }
         try {
         //   const currencyId: number = req.body.currencyId;
         //   const currency: Currency = await currencyService.getById(currencyId);
-          console.log("try p ");
           let user = new User();
           user.name = req.body.name;
           user.surname = req.body.surname;
@@ -60,13 +54,14 @@ export class UserController {
           const userRepository = getManager().getRepository(User);
           user = userRepository.create(user);
           user = await userService.insert(user);
-          console.log("abc");
+
           res.status(HttpStatus.OK).json({
             success: true
           });
         } catch (error) {
             console.log("error phan");
             console.log(error);
+            console.log("ei")
           const err: IResponseError = {
             success: false,
             code: HttpStatus.BAD_REQUEST,
@@ -76,40 +71,40 @@ export class UserController {
         }
     });    
 
-    public isLogin = async (req: Request , res: Response, next: NextFunction) => {
-        const userService = new UserService();
-        const validationErrors = validationResult(req);
-        const login: string = req.params.login;
+    // public isLogin = async (req: Request , res: Response, next: NextFunction) => {
+    //     const userService = new UserService();
+    //     // const validationErrors = validationResult(req);
+    //     const login: string = req.params.login;
 
-        if (!validationErrors.isEmpty()) {
-        const err: IResponseError = {
-            success: false,
-            code: HttpStatus.BAD_REQUEST,
-            error: validationErrors.array()
-        };
-        return next(err);
-        }
+    //     // if (!validationErrors.isEmpty()) {
+    //     // const err: IResponseError = {
+    //     //     success: false,
+    //     //     code: HttpStatus.BAD_REQUEST,
+    //     //     error: validationErrors.array()
+    //     // };
+    //     return next(err);
+    //     }
 
-        try {
-        const user: User = await userService.getByLogin(login);
+    //     try {
+    //     const user: User = await userService.getByLogin(login);
 
-        if (user)
-            return res.status(HttpStatus.OK).json({
-            isLogin: true
-            });
+    //     if (user)
+    //         return res.status(HttpStatus.OK).json({
+    //         isLogin: true
+    //         });
 
-        res.status(HttpStatus.OK).json({
-            isLogin: false
-        });
-        } catch (error) {
-        const err: IResponseError = {
-            success: false,
-            code: HttpStatus.BAD_REQUEST,
-            error
-        };
-        next(err);
-        }
-    }
+    //     res.status(HttpStatus.OK).json({
+    //         isLogin: false
+    //     });
+    //     } catch (error) {
+    //     const err: IResponseError = {
+    //         success: false,
+    //         code: HttpStatus.BAD_REQUEST,
+    //         error
+    //     };
+    //     next(err);
+    //     }
+    // }
 }
 // /**
 //  * Checks whether the login already exists

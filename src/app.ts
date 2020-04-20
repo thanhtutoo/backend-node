@@ -39,7 +39,7 @@ import { Logger, ILogger } from "./utils/logger";
 
 // Import Middlewares
 import { AuthHandler } from "./middlewares/authHandler.middleware";
-import genericErrorHandler from "./middlewares/genericErrorHandler.middleware";
+import {genericErrorHandlers} from "./middlewares/genericErrorHandler.middleware";
 import nodeErrorHandler from "./middlewares/nodeErrorHandler.middleware";
 import notFoundHandler from "./middlewares/notFoundHandler.middleware";
 
@@ -48,9 +48,11 @@ export class Application {
   config = config;
   logger: ILogger;
   CronJob = cron.CronJob;
+  genericerrorHandlers: genericErrorHandlers;
 
   constructor() {
     this.logger = new Logger(__filename);
+    this.genericerrorHandlers = new genericErrorHandlers();
     this.app = express();
 
     this.app.use(require("express-status-monitor")());
@@ -71,7 +73,7 @@ export class Application {
       swaggerUi.serve,
       swaggerUi.setup(swaggerDocument)
     );
-    this.app.use(genericErrorHandler);
+    this.app.use(this.genericerrorHandlers.genericErrorHandler);
     this.app.use(notFoundHandler);
   }
 
