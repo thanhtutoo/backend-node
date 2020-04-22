@@ -39,7 +39,7 @@ import { Logger, ILogger } from "./utils/logger";
 
 // Import Middlewares
 import { AuthHandler } from "./middlewares/authHandler.middleware";
-import {genericErrorHandlers} from "./middlewares/genericErrorHandler.middleware";
+import {GenericErrorHandlers} from "./middlewares/genericErrorHandler.middleware";
 import nodeErrorHandler from "./middlewares/nodeErrorHandler.middleware";
 import notFoundHandler from "./middlewares/notFoundHandler.middleware";
 
@@ -48,11 +48,11 @@ export class Application {
   config = config;
   logger: ILogger;
   CronJob = cron.CronJob;
-  genericerrorHandlers: genericErrorHandlers;
+  genericerrorHandlers: GenericErrorHandlers;
 
   constructor() {
     this.logger = new Logger(__filename);
-    this.genericerrorHandlers = new genericErrorHandlers();
+    this.genericerrorHandlers = new GenericErrorHandlers();
     this.app = express();
 
     this.app.use(require("express-status-monitor")());
@@ -93,7 +93,7 @@ export class Application {
     // await this.setTemplates();
     // await this.createAdmin();
     // await this.createAuthor();
-  };
+  }
 
   startServer = (): Promise<boolean> => {
     // process.on('unhandledRejection', err => {
@@ -113,6 +113,6 @@ export class Application {
         })
         .on("error", nodeErrorHandler);
     });
-  };
+  }
 
 }

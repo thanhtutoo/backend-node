@@ -2,9 +2,9 @@ import { NextFunction, Request, Response, Router } from "express";
 import * as HttpStatus from "http-status-codes";
 // import { body, param, validationResult } from "express-validator/check";
 import { getManager } from "typeorm";
-import catchAsync from "../utils/catchAsync";
-
-console.log(catchAsync);
+// import catchAsync from "../utils/catchAsync";
+import asyncWrapper from "async-wrapper-express-ts";
+// console.log(catchAsync);
 // Import Entities
 // import { Currency } from "../entities/currency.entity";
 import { User } from "../entities/user.entity";
@@ -25,23 +25,23 @@ const auth = new AuthHandler();
 const usersRouter: Router = Router();
 
 export class UserController {
-    public registerUser = catchAsync( async (req: Request , res: Response, next: NextFunction) => {
+    public registerUser = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {
         const userService = new UserService();
         // const billService = new BillService();
         // const currencyService = new CurrencyService();
         // const additionalService = new AdditionalService();
         // const validationErrors = validationResult(req);
-        const isLogin: User = await userService.getByLogin(req.body.login);
-
-        const isEmail: User = await userService.getByEmail(req.body.email);
-        if (!isLogin || !isEmail) {
-          const error: IResponseError = {
-            success: false,
-            code: HttpStatus.BAD_REQUEST,
-            error: "ggwp"
-          };
-          return next(error);
-        }
+        // const isLogin: User = await userService.getByLogin(req.body.login);
+        // console.log(isLogin);
+        // const isEmail: User = await userService.getByEmail(req.body.email);
+        // if (!isLogin || !isEmail) {
+        //   const error: IResponseError = {
+        //     success: false,
+        //     code: HttpStatus.BAD_REQUEST,
+        //     error: "ggwp"
+        //   };
+        //   return next(error);
+        // }
         try {
         //   const currencyId: number = req.body.currencyId;
         //   const currency: Currency = await currencyService.getById(currencyId);
@@ -61,7 +61,7 @@ export class UserController {
         } catch (error) {
             console.log("error phan");
             console.log(error);
-            console.log("ei")
+            console.log("ei");
           const err: IResponseError = {
             success: false,
             code: HttpStatus.BAD_REQUEST,
@@ -69,7 +69,7 @@ export class UserController {
           };
           next(err);
         }
-    });    
+    });
 
     // public isLogin = async (req: Request , res: Response, next: NextFunction) => {
     //     const userService = new UserService();

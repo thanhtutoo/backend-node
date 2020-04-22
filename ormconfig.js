@@ -23,7 +23,8 @@ module.exports = {
   synchronize: true,
   logging: false,
   dropSchema: process.env.NODE_ENV === "test" ? true : false,
-  entities: [__dirname + "/src/entities/*.ts"],
+  entities: [    __dirname + '/**/**/**/*.entity.js'
+],
   migrations: [__dirname + "/src/migration/**/*.ts"],
   subscribers: [__dirname + "/src/subscriber/**/*.ts"],
   cli: {
