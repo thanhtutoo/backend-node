@@ -9,8 +9,8 @@ import {
 
 import { Strategy } from "passport";
 import config from "../config/config";
-import { User } from "../entities/user.entity";
-import { UserService } from "../services/users.service";
+import { User } from "../entities/User";
+import { UserService } from "../services/UserService";
 
 const { auth, admin } = config;
 

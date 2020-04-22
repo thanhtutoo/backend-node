@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 // Import Controllers
-import {UserRoutes} from "./routes/userRoutes";
+import {UserRoutes} from "./routes/UserRoutes";
 // import registerRouter from "./controllers/register.controller";
 // import loginRouter from "./controllers/login.controller";
 // import logoutRouter from "./controllers/logout.controller";
@@ -15,7 +15,7 @@ import {UserRoutes} from "./routes/userRoutes";
 // import messagesRouter from "./controllers/messages.controller";
 
 // Import Middlewares
-import { AuthHandler } from "./middlewares/authHandler.middleware";
+import { AuthHandler } from "./middlewares/AuthHandler";
 
 const auth = new AuthHandler();
 const userRoute = new UserRoutes();

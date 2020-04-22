@@ -38,10 +38,10 @@ import { Logger, ILogger } from "./utils/logger";
 // import { CurrencyCron } from "./crons/currency.cron";
 
 // Import Middlewares
-import { AuthHandler } from "./middlewares/authHandler.middleware";
-import {GenericErrorHandlers} from "./middlewares/genericErrorHandler.middleware";
-import nodeErrorHandler from "./middlewares/nodeErrorHandler.middleware";
-import notFoundHandler from "./middlewares/notFoundHandler.middleware";
+import { AuthHandler } from "./middlewares/AuthHandler";
+import {GenericErrorHandlers} from "./middlewares/GenericErrorHandler";
+import nodeErrorHandler from "./middlewares/NodeErrorHandler";
+import notFoundHandler from "./middlewares/NotFoundHandler";
 
 export class Application {
   app: express.Application;
@@ -54,7 +54,7 @@ export class Application {
     this.logger = new Logger(__filename);
     this.genericerrorHandlers = new GenericErrorHandlers();
     this.app = express();
-
+    console.log(process.env.NODE_ENV);
     this.app.use(require("express-status-monitor")());
     this.app.use(cors());
     this.app.use(helmet());

@@ -688,22 +688,14 @@
         "name": {
           "type": "string"
         },
-        "surname": {
+        "username": {
           "type": "string"
-        },
-        "login": {
-          "type": "integer",
-          "format": "int32"
         },
         "password": {
           "type": "string"
         },
         "email": {
           "type": "string"
-        },
-        "currencyId": {
-          "type": "integer",
-          "format": "int32"
         }
       }
     },

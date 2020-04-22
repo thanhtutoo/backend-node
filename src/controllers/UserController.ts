@@ -7,18 +7,18 @@ import asyncWrapper from "async-wrapper-express-ts";
 // console.log(catchAsync);
 // Import Entities
 // import { Currency } from "../entities/currency.entity";
-import { User } from "../entities/user.entity";
+import { User } from "../entities/User";
 
 // Import Middlewares
-import { AuthHandler } from "../middlewares/authHandler.middleware";
+import { AuthHandler } from "../middlewares/AuthHandler";
 
 // Impoty Services
-import { UserService } from "../services/users.service";
+import { UserService } from "../services/UserService";
 // import { CurrencyService } from "../services/currency.service";
 // import { AdditionalService } from "../services/additionals.service";
 
 // // Import Interfaces
-import { IResponseError } from "../resources/interfaces/IResponseError.interface";
+import { IResponseError } from "../resources/interfaces/IResponseError";
 
 
 const auth = new AuthHandler();
@@ -47,9 +47,8 @@ export class UserController {
         //   const currency: Currency = await currencyService.getById(currencyId);
           let user = new User();
           user.name = req.body.name;
-          user.surname = req.body.surname;
+          user.username = req.body.username;
           user.email = req.body.email;
-          user.login = req.body.login;
           user.password = req.body.password;
           const userRepository = getManager().getRepository(User);
           user = userRepository.create(user);

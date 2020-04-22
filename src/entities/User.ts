@@ -9,7 +9,7 @@ import {
 } from "typeorm";
 
 @Entity("users")
-@Unique(["email", "login"])
+@Unique(["email", "username"])
 export class User {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,14 +17,11 @@ export class User {
   @Column()
   name: string;
 
-  @Column()
-  surname: string;
+  @Column({ nullable: true })
+  username: string;
 
   @Column()
   email: string;
-
-  @Column("bigint")
-  login: number;
 
   @Column()
   password: string;
