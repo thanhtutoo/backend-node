@@ -1,4 +1,4 @@
-import { getManager, Repository } from "typeorm";
+import { getManager, Repository, getRepository } from "typeorm";
 import { Logger, ILogger } from "../utils/logger";
 
 // Import Entities
@@ -61,21 +61,18 @@ export class UserService {
   /**
    * Returns a user by login
    */
-  async getByLogin(login: string | number): Promise<User | undefined> {
+  async getByLogin(username: string): Promise<User | undefined> {
     try {
-      console.log(login);
       const user: User = await this.userRepository.findOne({
-        where: {
-          login
-        }
+        username:username
       });
+
       if (user) {
         return user;
       } else {
-        return undefined;
+        return Promise.reject({message:"user_not_found!"});
       }
     } catch (error) {
-      console.log("ggwp");
       return Promise.reject(error);
     }
   }

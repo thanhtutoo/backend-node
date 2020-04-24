@@ -1,14 +1,15 @@
+import bcrypt from "bcryptjs";
 import { NextFunction, Request, Response, Router } from "express";
 import * as HttpStatus from "http-status-codes";
 // import { body, param, validationResult } from "express-validator/check";
-import { getManager } from "typeorm";
+import { getManager, getRepository, AdvancedConsoleLogger } from "typeorm";
 // import catchAsync from "../utils/catchAsync";
 import asyncWrapper from "async-wrapper-express-ts";
 // console.log(catchAsync);
 // Import Entities
 // import { Currency } from "../entities/currency.entity";
 import { User } from "../entities/User";
-
+import { Role } from "../entities/Role";
 // Import Middlewares
 import { AuthHandler } from "../middlewares/AuthHandler";
 
@@ -19,6 +20,7 @@ import { UserService } from "../services/UserService";
 
 // // Import Interfaces
 import { IResponseError } from "../resources/interfaces/IResponseError";
+import ResponseFormat from "../utils/ResponseFormat";
 
 
 const auth = new AuthHandler();
@@ -27,53 +29,56 @@ const usersRouter: Router = Router();
 export class UserController {
     public registerUser = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {
         const userService = new UserService();
-        // const billService = new BillService();
-        // const currencyService = new CurrencyService();
-        // const additionalService = new AdditionalService();
-        // const validationErrors = validationResult(req);
-        // const isLogin: User = await userService.getByLogin(req.body.login);
-        // console.log(isLogin);
-        // const isEmail: User = await userService.getByEmail(req.body.email);
-        // if (!isLogin || !isEmail) {
-        //   const error: IResponseError = {
-        //     success: false,
-        //     code: HttpStatus.BAD_REQUEST,
-        //     error: "ggwp"
-        //   };
-        //   return next(error);
-        // }
-        try {
-        //   const currencyId: number = req.body.currencyId;
-        //   const currency: Currency = await currencyService.getById(currencyId);
-          let user = new User();
-          user.name = req.body.name;
-          user.username = req.body.username;
-          user.email = req.body.email;
-          user.password = req.body.password;
-          const userRepository = getManager().getRepository(User);
-          user = userRepository.create(user);
-          user = await userService.insert(user);
+        // const roleService = new UserService();
+        let user = new User();
+        // let role1 = new Role();
+        const role = await getRepository(Role).findOne({
+            name: req.body.role
+        });
+        user.name = req.body.name;
+        user.username = req.body.username;
+        user.email = req.body.email;
+        user.password = req.body.password;
+        user.is_active = true;
+        user.roles = [role];
+        // const userRepository = getManager().getRepository(User);
+        // user = userRepository.create(user);
+        user = await userService.insert(user);
 
-          res.status(HttpStatus.OK).json({
-            success: true
-          });
-        } catch (error) {
-            console.log("error phan");
-            console.log(error);
-            console.log("ei");
-          const err: IResponseError = {
-            success: false,
-            code: HttpStatus.BAD_REQUEST,
-            error
-          };
-          next(err);
-        }
+        const data = {user};
+        res.status(HttpStatus.OK).json(ResponseFormat.success(data));
+
     });
 
-    // public isLogin = async (req: Request , res: Response, next: NextFunction) => {
+    public loginUser = asyncWrapper( async (req: Request, res: Response, next: NextFunction) => {
+        const userService = new UserService();
+        const authHandler = new AuthHandler();
+        const user: User = await userService.getByLogin(req.body.username);
+
+        const isPasswordCorrect: boolean = await bcrypt.compare(
+          req.body.password,
+          user.password
+        );
+        if (!user || !isPasswordCorrect || user.is_active === false) {
+          if (!isPasswordCorrect) await userService.setLastFailedLoggedDate(user);
+          console.log(user.is_active);
+          console.log("gg")
+          return next({message:user.is_active === false?"user_is_not_activated":"password_incorrect",status:403});
+        }
+        try {
+          await userService.setLastPresentLoggedDate(user);
+          const token: string = authHandler.generateToken(user);
+          const data: object = {access_token:token,expires_in:432000,token_type:"Bearer"};
+          res.status(HttpStatus.OK).json(ResponseFormat.success(data));
+        } catch (error) {
+          next(error);
+        }
+    })
+}
+    // public isLogin = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {
     //     const userService = new UserService();
     //     // const validationErrors = validationResult(req);
-    //     const login: string = req.params.login;
+    //     const username: string = req.params.username;
 
     //     // if (!validationErrors.isEmpty()) {
     //     // const err: IResponseError = {
@@ -81,8 +86,8 @@ export class UserController {
     //     //     code: HttpStatus.BAD_REQUEST,
     //     //     error: validationErrors.array()
     //     // };
-    //     return next(err);
-    //     }
+    //     // return next(err);
+    //     // }
 
     //     try {
     //     const user: User = await userService.getByLogin(login);
@@ -103,8 +108,8 @@ export class UserController {
     //     };
     //     next(err);
     //     }
-    // }
-}
+    // });
+// }
 // /**
 //  * Checks whether the login already exists
 //  *

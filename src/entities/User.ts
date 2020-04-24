@@ -5,8 +5,12 @@ import {
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
-  Unique
+  Unique,
+  ManyToMany,
+  JoinTable
 } from "typeorm";
+import {Role} from "../entities/Role";
+
 
 @Entity("users")
 @Unique(["email", "username"])
@@ -38,6 +42,12 @@ export class User {
   @Column({ nullable: true })
   lastFailedLoggedDate: Date;
 
+  @Column("boolean", { default: false })
+  is_active: boolean;
+  
+  @Column("boolean", { default: false })
+  status: boolean;
+
   async setPassword(newPassword: string) {
     this.password = await bcrypt.hash(newPassword, 10);
   }
@@ -46,4 +56,9 @@ export class User {
   async encryptPassword() {
     this.password = await bcrypt.hash(this.password, 10);
   }
+  @ManyToMany(type => Role)
+  @JoinTable({ name:'users_roles'})
+
+  roles: Role[];
+
 }

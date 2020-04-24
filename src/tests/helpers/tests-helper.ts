@@ -3,7 +3,7 @@ import express from "express";
 import chai from "chai";
 import chaiHttp = require("chai-http");
 import { before } from "mocha";
-import "mocha";
+// import "mocha";
 import config from "../../config/config";
 
 chai.use(chaiHttp);

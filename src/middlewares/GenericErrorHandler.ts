@@ -3,6 +3,9 @@ import { Request, Response, NextFunction } from "express";
 
 import { Logger } from "../utils/logger";
 import { any } from "bluebird";
+
+import ResponseFormat from "../utils/ResponseFormat";
+
 /**
  * Generic error response middleware for internal server errors.
  *
@@ -15,20 +18,19 @@ import { any } from "bluebird";
 export class GenericErrorHandlers {
 
   public handleCastErrorDB = async (err: any, req: Request , res: Response, next: NextFunction) => {
-    res.status(402).json({
-      success: false,
-      time: new Date().toLocaleString(),
-      code: 402,
-      message: "db_error_found"
-    });
+    const errCode = err.status || 500;
+    const data = {message:"db_error_found"};
+    res.status(errCode).json(ResponseFormat.error(data));
   }
 
   public genericErrorHandler = async (err: any, req: Request , res: Response, next: NextFunction) => {
     const logger = new Logger(__filename);
     logger.info(`Info: ${JSON.stringify(req.body)}`);
     logger.error(`Error: ${JSON.stringify(err)}`);
-    console.log(err);
-    const errCode = err.status || err.code || 500;
+    console.log(err.error);
+    console.log("err.error");
+    console.log(err.name);
+    const errCode = err.status || 500;
     let errorMsg = "";
     // let extractedErrors: Array<any> = [];
 
@@ -40,15 +42,18 @@ export class GenericErrorHandlers {
         ? err.error.message + " " + (err.error.detail || "")
         : err.message;
     }
-    if (err.error.name === "QueryFailedError") {
+    
+    if (err.name === "QueryFailedError") {
       return this.handleCastErrorDB(err, req , res, next);
     }
-    res.status(errCode).json({
-      success: false,
-      time: new Date().toLocaleString(),
-      code: errCode,
-      message: errorMsg
-    });
+    const data = {message:errorMsg};
+    res.status(errCode).json(ResponseFormat.error(data));
+    // res.status(errCode).json({
+    //   success: false,
+    //   time: new Date().toLocaleString(),
+    //   code: errCode,
+    //   message: errorMsg
+    // });
   }
 
 
