@@ -5,7 +5,7 @@ dotenv.config();
 const isTestEnvironment = process.env.NODE_ENV === "test";
 
 export default {
-  name: "V2X Core",
+  name: "Backend Core",
   version: "1.0",
   host: process.env.APP_HOST || "127.0.0.1",
   environment: process.env.NODE_ENV || "development",
@@ -31,11 +31,11 @@ export default {
     database: isTestEnvironment ? process.env.TEST_DB_NAME : process.env.DB_NAME
   },
   admin: {
-    login: parseInt(process.env.ADMIN_LOGIN, 10) || 3323,
-    password: process.env.ADMIN_PASSWORD || "root",
-    name: process.env.ADMIN_NAME || "Bank",
+    username: parseInt(process.env.ADMIN_LOGIN, 10) || 3323,
+    password: process.env.ADMIN_PASSWORD || "admin",
+    name: process.env.ADMIN_NAME || "admin",
     surname: process.env.ADMIN_SURNAME || "Application",
-    email: process.env.ADMIN_EMAIL || "example@gmail.com"
+    email: process.env.ADMIN_EMAIL || "thanhtutoo95atgmail.com"
   },
   author: {
     login: parseInt(process.env.AUTHOR_LOGIN, 10) || 9922,

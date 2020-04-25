@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import passport from "passport";
 import { BasicStrategy } from "passport-http";
 import {
@@ -8,9 +9,12 @@ import {
 } from "passport-jwt";
 
 import { Strategy } from "passport";
+import { getRepository } from "typeorm";
 import config from "../config/config";
 import { User } from "../entities/User";
 import { UserService } from "../services/UserService";
+import { userInfo } from "os";
+import { runInNewContext } from "vm";
 
 const { auth, admin } = config;
 
@@ -62,15 +66,25 @@ export class AuthHandler {
   }
 
   getBasicStategy(): Strategy {
-    return new BasicStrategy(function(username, password, done) {
-      if (
-        username.valueOf() === `${admin.login}` &&
-        password.valueOf() === `${admin.password}`
-      ) {
-        return done(null, true);
-      } else {
-        return done(null, false);
+    return new BasicStrategy(async (username, password, next)=> {
+
+      getRepository(User).findOneOrFail({username:username},{relations: ["roles"]})
+      .then(async userInfo => {
+      const isPasswordCorrect:boolean = await bcrypt.compare(
+          password,
+          userInfo.password
+        );
+      if (!isPasswordCorrect){
+        next({message:"password_incorrect"});
+      } else{
+        console.log("passed");
+        next(null, {
+          id: userInfo.id, role:userInfo.roles
+        });
       }
+      }).catch(err => {
+        next({err,message:"user_not_found"});
+      });
     });
   }
 

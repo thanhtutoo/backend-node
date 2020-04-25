@@ -42,11 +42,8 @@ export class User {
   @Column({ nullable: true })
   lastFailedLoggedDate: Date;
 
-  @Column("boolean", { default: false })
-  is_active: boolean;
-  
-  @Column("boolean", { default: false })
-  status: boolean;
+  @Column("smallint",{default:0,nullable: true})
+  is_active: number;
 
   async setPassword(newPassword: string) {
     this.password = await bcrypt.hash(newPassword, 10);

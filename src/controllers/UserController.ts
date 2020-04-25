@@ -39,7 +39,7 @@ export class UserController {
         user.username = req.body.username;
         user.email = req.body.email;
         user.password = req.body.password;
-        user.is_active = true;
+        user.is_active = 1;
         user.roles = [role];
         // const userRepository = getManager().getRepository(User);
         // user = userRepository.create(user);
@@ -59,11 +59,11 @@ export class UserController {
           req.body.password,
           user.password
         );
-        if (!user || !isPasswordCorrect || user.is_active === false) {
+        if (!user || !isPasswordCorrect || user.is_active === 0) {
           if (!isPasswordCorrect) await userService.setLastFailedLoggedDate(user);
           console.log(user.is_active);
           console.log("gg")
-          return next({message:user.is_active === false?"user_is_not_activated":"password_incorrect",status:403});
+          return next({message:user.is_active === 0?"user_is_not_activated":"password_incorrect",status:401});
         }
         try {
           await userService.setLastPresentLoggedDate(user);
@@ -73,6 +73,10 @@ export class UserController {
         } catch (error) {
           next(error);
         }
+    })
+    public adminPost = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {
+      console.log("admin Post");
+    
     })
 }
     // public isLogin = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {
