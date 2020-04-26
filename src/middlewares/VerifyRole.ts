@@ -4,15 +4,36 @@ import {Role} from "../entities/Role";
 
 export class VerifyRole{
 
+	// public isAdmin = function (req: Request, res: Response, next:NextFunction) {
+	// 	const roleArr = req.user.role;
+	// 	const checkAdmin = roleArr.map(function(e:any) { return e.name; }).indexOf('Admin');
+	// 	if(checkAdmin >= 0){
+	// 		return next();
+	// 	}else{
+	// 		return next({message:"Require admin role",status:403});
+	// 	}
+	// }
 	public isAdmin = function (req: Request, res: Response, next:NextFunction) {
-	const roleArr = req.user.role;
-	const checkAdmin = roleArr.map(function(e:any) { return e.name; }).indexOf('Admin');
-	if(checkAdmin >= 0){
-		return next();
-	}else{
-		return next({message:"Require admin role",status:403});
+		const roleArr = req.user.role;
+		const checkAdmin = roleArr.map(function(e:any) { return e.name; }).indexOf('Manager');
+		// console.log(checkAdmin);
+		// console.log("checkAdmin");
+		if(checkAdmin >= 0){
+			return true;
+		}else{
+			return false;
+		}
+		// return false;
 	}
-}
+	// public isAdmin = function (req: Request, res: Response, next:NextFunction) {
+	// 	const roleArr = req.user.role;
+	// 	const checkAdmin = roleArr.map(function(e:any) { return e.name; }).indexOf('Admin');
+	// 	if(checkAdmin >= 0){
+	// 		return next();
+	// 	}else{
+	// 		return next({message:"Require admin role",status:403});
+	// 	}
+	// }
 
 // function isManager(req: Request, res: Response, next:NextFunction) {
 // 	const roleArr = req.user.role;

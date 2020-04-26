@@ -76,8 +76,8 @@ export class UserController {
         }
     })
     public adminPost = asyncWrapper( async (req: any , res: Response, next: NextFunction) => {
-      const role = await getRepository(Role).findOne({
-        name: "Admin"
+      const user = await getRepository(User).findOne({
+        username: "manager"
       });
       // const ability = defineAbilitiesFor(user)
       // ability.can('read', 'Role');
@@ -86,9 +86,10 @@ export class UserController {
       console.log("req.abilit");
       console.log("req.ability");
       // console.log(req.ability.throwUnlessCan());
-      console.log(req.ability.can('read', "Post"));
+      console.log(user);
+      // console.log(req.ability.can('update', user));
       console.log(ForbiddenError.from(req.ability).throwUnlessCan('read', "Post"));
-
+      ForbiddenError.from(req.ability).throwUnlessCan('update', user)
       // req.ability.throwUnlessCan('read', role);
       console.log("admin post 2");
     })
