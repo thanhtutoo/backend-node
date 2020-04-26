@@ -79,7 +79,7 @@ export class AuthHandler {
       } else{
         console.log("passed");
         next(null, {
-          id: userInfo.id, role:userInfo.roles
+          id: userInfo.id, email: userInfo.email, role:userInfo.roles
         });
       }
       }).catch(err => {

@@ -18,6 +18,7 @@
   "author": "Fuego",
   "license": "MIT",
   "dependencies": {
+    "@casl/ability": "^4.0.7",
     "@types/chai": "^4.2.11",
     "@types/chai-http": "^4.2.0",
     "async-wrapper-express-ts": "^3.1.1",

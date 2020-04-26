@@ -1,4 +1,5 @@
 import bcrypt from "bcryptjs";
+import {ForbiddenError} from "@casl/ability";
 import { NextFunction, Request, Response, Router } from "express";
 import * as HttpStatus from "http-status-codes";
 // import { body, param, validationResult } from "express-validator/check";
@@ -74,9 +75,22 @@ export class UserController {
           next(error);
         }
     })
-    public adminPost = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {
+    public adminPost = asyncWrapper( async (req: any , res: Response, next: NextFunction) => {
+      const role = await getRepository(Role).findOne({
+        name: "Admin"
+      });
+      // const ability = defineAbilitiesFor(user)
+      // ability.can('read', 'Role');
       console.log("admin Post");
-    
+      console.log(req.ability);
+      console.log("req.abilit");
+      console.log("req.ability");
+      // console.log(req.ability.throwUnlessCan());
+      console.log(req.ability.can('read', "Post"));
+      console.log(ForbiddenError.from(req.ability).throwUnlessCan('read', "Post"));
+
+      // req.ability.throwUnlessCan('read', role);
+      console.log("admin post 2");
     })
 }
     // public isLogin = asyncWrapper( async (req: Request , res: Response, next: NextFunction) => {

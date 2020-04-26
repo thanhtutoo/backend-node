@@ -16,7 +16,6 @@ import {UserRoutes} from "./routes/UserRoutes";
 
 // Import Middlewares
 import { AuthHandler } from "./middlewares/AuthHandler";
-
 const auth = new AuthHandler();
 const userRoute = new UserRoutes();
 const router: Router = Router();
