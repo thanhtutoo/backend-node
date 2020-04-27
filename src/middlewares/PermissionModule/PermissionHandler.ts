@@ -3,15 +3,15 @@
  * provide hooks into authorization module
  */
 import { AccessControl as Authorizer, Permission as AuthPermission, Query as AuthQuery } from "accesscontrol";
-import cache from "../utils/cache/Cache"; // Redis commands
-import {Logger} from "../utils/logger";
+import cache from "../../utils/cache/Cache"; // Redis commands
+import {Logger} from "../../utils/logger";
 
 import { event, EventType } from "./ActivityHelper";
 
 import { getRepository, Repository } from "typeorm";
-import { User } from "../entities/User";
-import { Role } from "../entities/Role";
-import { Permission } from "../entities/Permission";
+import { User } from "../../entities/User";
+import { Role } from "../../entities/Role";
+import { Permission } from "../../entities/Permission";
 
 /**
  * Keys for cache
@@ -143,7 +143,7 @@ const getUserRoles = async (user: User): Promise<string[]> => {
   console.log("aaac");
   console.log(user);
   if (rolesInCache && rolesInCache.length > 0) {
-    log(EventType.CACHE_HIT, USER_ROLES_KEY(user.id.toString()), started);
+    // log(EventType.CACHE_HIT, USER_ROLES_KEY(user.id.toString()), started);
     console.log("rolesincache");
     console.log(rolesInCache);
     return rolesInCache;

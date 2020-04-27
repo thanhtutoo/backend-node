@@ -3,7 +3,7 @@
  */
 import moment from "moment";
 import { PhoneNumberUtil, PhoneNumber, PhoneNumberFormat } from "google-libphonenumber";
-import {Logger} from "../utils/logger";
+import {Logger} from "../../utils/logger";
 import ApiResponse from "./ResponseInterface";
 
 export enum DataType {

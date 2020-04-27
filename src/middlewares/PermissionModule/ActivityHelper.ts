@@ -1,6 +1,6 @@
 import os from "os";
 import { EventEmitter } from "events";
-import {Logger} from "../utils/logger";
+import {Logger} from "../../utils/logger";
 import { Activity, ActivityType } from "./ActivityStreamInterface";
 import { DataType, Formatter } from "./formatter";
 

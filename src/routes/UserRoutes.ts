@@ -5,8 +5,8 @@ import { AuthHandler } from "../middlewares/AuthHandler";
 import { VerifyRole } from "../middlewares/VerifyRole";
 // import {AccessAbility} from "../middlewares/Abilities";
 
-import { ActivityType, ActorType, ObjectType } from "../middlewares/ActivityStreamInterface";
-import { AuthPermission, getPermission } from "../middlewares/PermissionHandler";
+import { ActivityType, ActorType, ObjectType } from "../middlewares/PermissionModule/ActivityStreamInterface";
+import { AuthPermission, getPermission } from "../middlewares/PermissionModule/PermissionHandler";
 
 const auth = new AuthHandler();
 const veryfyRole = new VerifyRole();
