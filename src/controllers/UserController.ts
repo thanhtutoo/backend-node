@@ -23,6 +23,8 @@ import { UserService } from "../services/UserService";
 import { IResponseError } from "../resources/interfaces/IResponseError";
 import ResponseFormat from "../utils/ResponseFormat";
 
+import { ActivityType, ActorType, ObjectType } from "../middlewares/ActivityStreamInterface";
+import { AuthPermission, getPermission } from "../middlewares/PermissionHandler";
 
 const auth = new AuthHandler();
 const usersRouter: Router = Router();
@@ -75,6 +77,24 @@ export class UserController {
           next(error);
         }
     })
+
+    public testingAuth = asyncWrapper( async (req: any , res: Response, next: NextFunction) => {
+      console.log("req.id");
+      console.log(req);
+      console.log("req");
+      const resource: string = "users";
+      const isOwnerOrMember: boolean = true;
+      const action: string = ActivityType.READ;
+      // const user = await getRepository(User).findOne({
+      //   username: "manager"},{
+      //     relations: ["roles"]
+      // });
+      // console.log(user);
+      const permission: AuthPermission = await getPermission(req.user, isOwnerOrMember, action, resource);
+      console.log(permission.granted);
+      console.log("permission.granted");
+    });
+
     public adminPost = asyncWrapper( async (req: any , res: Response, next: NextFunction) => {
       const user = await getRepository(User).findOne({
         username: "manager"
